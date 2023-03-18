@@ -7,4 +7,6 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+enigo = { git = "https://github.com/enigo-rs/enigo" }
+crossterm = "0.26.1"
 rand = "0.8.5"

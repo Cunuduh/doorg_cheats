@@ -1,13 +1,23 @@
+mod auto_send;
 use std::io::*;
 use std::fs::File;
 use rand::Rng;
 fn main() {
     let dictionary = parse_dictionary();
+    println!("Welcome to the Black Tea and Create a Word program.");
+    println!("Enter a string of letters to find a word that contains the letters.");
+    println!("Or enter a letter and a number to find a word that starts with the letter and has the length of the number.");
+    println!("Enter _quit to quit.");
+    println!("Enter _autosend_mod to enter the autosend mode.");
     loop {
         let mut s = String::new();
         stdin().read_line(&mut s).unwrap();
-        if s.trim().eq_ignore_ascii_case("_") {
+        if s.trim().eq_ignore_ascii_case("_quit") {
             break;
+        }
+        if s.trim().eq_ignore_ascii_case("_autosend_mod") {
+            auto_send::send();
+            continue;
         }
         if s.trim().chars().all(|c| c.is_ascii_alphabetic()) {
             black_tea(s, &dictionary);
@@ -34,7 +44,7 @@ fn black_tea(s: String, dictionary: &Vec<String>) {
         }
     }
     if possible_words.is_empty() {
-        println!("No words found");
+        println!("No words found.");
         return;
     }
     let words: Vec<&String> = possible_words.iter().filter(|&w| w.len() == min_word_len).collect();
@@ -54,7 +64,7 @@ fn create_a_word(s: String, dictionary: &Vec<String>) {
         }
     }
     if possible_words.is_empty() {
-        println!("No words found");
+        println!("No words found.");
         return;
     }
     let random_word = rand::thread_rng().gen_range(0..possible_words.len());
@@ -63,8 +73,8 @@ fn create_a_word(s: String, dictionary: &Vec<String>) {
 }
 /// Parse the dictionary.txt file
 fn parse_dictionary() -> Vec<String> {
-    let mut file = File::open("src/dictionary.txt").expect("file not found");
+    let mut file = File::open("src/dictionary.txt").expect("dictionary.txt not found.");
     let mut contents = String::new();
-    file.read_to_string(&mut contents).expect("something went wrong reading the file");
+    file.read_to_string(&mut contents).unwrap();
     contents.split_whitespace().filter(|&s| s.chars().all(|c| c.is_alphabetic())).map(|s| s.to_string()).collect::<Vec<String>>()
 }
