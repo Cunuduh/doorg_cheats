@@ -5,7 +5,7 @@ fn main() {
     let dictionary = parse_dictionary();
     loop {
         let mut s = String::new();
-        stdin().read_line(&mut s).expect("stfu compiler");
+        stdin().read_line(&mut s).unwrap();
         if s.trim().eq_ignore_ascii_case("_") {
             break;
         }
@@ -16,7 +16,8 @@ fn main() {
         create_a_word(s, &dictionary);
     }
 }
-/// This function will take a string and return the shortest word that contains the string
+/// This function will take a string and return the shortest word that contains the string. If multiple words are found, it will return a random word.
+/// Example: the string "irt" should return the word "dirt" or "girt".
 fn black_tea(s: String, dictionary: &Vec<String>) {
     let mut possible_words: Vec<String> = Vec::new();
     let mut min_word_len = 0;
@@ -41,8 +42,8 @@ fn black_tea(s: String, dictionary: &Vec<String>) {
     let possible_word = words[random_word];
     println!("{possible_word}");
 }
-/// This function will take a string and return a random word that starts with the first character and has the length of the rest of the string
-/// Example: "A5" will return a random word that starts with "a" and has a length of 5
+/// This function will take a string and return a random word that starts with the first character and has the length of the rest of the string.
+/// Example: "A5" will return a random word that starts with "a" and has a length of 5.
 fn create_a_word(s: String, dictionary: &Vec<String>) {
     let word_start: char = s.as_str()[0..1].parse().unwrap();
     let word_len: usize = s.as_str()[1..].trim().parse().unwrap();
