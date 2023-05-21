@@ -6,16 +6,16 @@ fn main() {
     let dictionary = parse_dictionary();
     println!("Welcome to the Black Tea and Create a Word program.");
     println!("Enter a string of letters to find a word that contains the letters.");
-    println!("Or enter a letter and a number to find a word that starts with the letter and has the length of the number.");
+    println!("Or enter a letter and a number to find a word that starts with the letter and has the length of the number. Example: A5");
     println!("Enter _quit to quit.");
-    println!("Enter _autosend_mod to enter the autosend mode.");
+    println!("Enter _autosend to enter the autosend mode.");
     loop {
         let mut s = String::new();
         stdin().read_line(&mut s).unwrap();
         if s.trim().eq_ignore_ascii_case("_quit") {
             break;
         }
-        if s.trim().eq_ignore_ascii_case("_autosend_mod") {
+        if s.trim().eq_ignore_ascii_case("_autosend") {
             auto_send::send();
             continue;
         }
