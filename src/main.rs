@@ -26,8 +26,6 @@ fn main() {
         create_a_word(s, &dictionary);
     }
 }
-/// This function will take a string and return the shortest word that contains the string. If multiple words are found, it will return a random word.
-/// Example: the string "irt" should return the word "dirt" or "girt".
 fn black_tea(s: String, dictionary: &Vec<String>) {
     let mut possible_words: Vec<String> = Vec::new();
     let mut min_word_len = 0;
@@ -52,8 +50,6 @@ fn black_tea(s: String, dictionary: &Vec<String>) {
     let possible_word = words[random_word];
     println!("{possible_word}");
 }
-/// This function will take a string and return a random word that starts with the first character and has the length of the rest of the string.
-/// Example: "A5" will return a random word that starts with "a" and has a length of 5.
 fn create_a_word(s: String, dictionary: &Vec<String>) {
     let word_start: char = s.as_str()[0..1].parse().unwrap();
     let word_len: usize = s.as_str()[1..].trim().parse().unwrap();
@@ -71,10 +67,10 @@ fn create_a_word(s: String, dictionary: &Vec<String>) {
     let possible_word = &possible_words[random_word];
     println!("{possible_word}");
 }
-/// Parse the dictionary.txt file
 fn parse_dictionary() -> Vec<String> {
-    let mut file = File::open("src/dictionary.txt").expect("dictionary.txt not found.");
+    let exe_dir = std::env::current_exe().unwrap();
+    let mut file = File::open(format!("{}/dictionary.txt", exe_dir.parent().unwrap().display())).expect("dictionary.txt not found in the same directory as the executable");
     let mut contents = String::new();
     file.read_to_string(&mut contents).unwrap();
-    contents.split_whitespace().filter(|&s| s.chars().all(|c| c.is_alphabetic())).map(|s| s.to_string()).collect::<Vec<String>>()
+    contents.split_whitespace().filter(|&s| s.chars().all(|c| c.is_alphabetic())).map(|s| s.to_string()).collect::<>()
 }
