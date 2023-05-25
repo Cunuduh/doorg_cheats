@@ -1,7 +1,8 @@
-use std::{io, thread, time::Duration};
-use crossterm::event::{read, Event, KeyCode, KeyModifiers, KeyEvent};
+use std::{io::{self, stdout, Write}, thread, time::Duration};
+use crossterm::{cursor::{self}, event::{read, Event, KeyCode, KeyModifiers, KeyEvent}, QueueableCommand, terminal::{self}};
 use enigo::{Enigo, Key, KeyboardControllable};
 pub fn send() {
+    let mut stdout = stdout();
     let mut enigo = Enigo::new();
     let mut delay = String::new();
     println!("Press ESC to quit while focused on the console application.");
@@ -14,12 +15,19 @@ pub fn send() {
     io::stdin().read_line(&mut input).unwrap();
     
     thread::spawn(listen);
-    println!("Starting in 5 seconds . . . ");
-    thread::sleep(Duration::from_secs(5));
+    for i in (0..=5).rev() {
+        stdout.queue(cursor::SavePosition).unwrap();
+        stdout.write_all(format!("Sending in {} second(s) . . .", i).as_bytes()).unwrap();
+        stdout.queue(cursor::RestorePosition).unwrap();
+        stdout.flush().unwrap();
+        thread::sleep(Duration::from_secs(1));
+        stdout.queue(cursor::RestorePosition).unwrap();
+        stdout.queue(terminal::Clear(terminal::ClearType::FromCursorDown)).unwrap();
+    }
     loop {
-        thread::sleep(delay);
         enigo.key_sequence(&input);
         enigo.key_click(Key::Return);
+        thread::sleep(delay);
     }
 }
 fn listen() {
